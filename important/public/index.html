@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hussain Free Sharing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        #output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 20px auto;
+            width: 50%;
+            max-width: 500px;
+            height: 200px;
+            overflow-y: auto;
+        }
+        textarea {
+            width: 50%;
+            max-width: 500px;
+            height: 100px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>AirForShare Clone</h1>
+    <textarea id="input" placeholder="Type your text or paste content here..."></textarea>
+    <br>
+    <button onclick="shareData()">Share</button>
+
+    <h3>Shared Content:</h3>
+    <div id="output"></div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        // Share data with server
+        function shareData() {
+            const input = document.getElementById('input').value;
+            if (input) {
+                socket.emit('shareData', input); // Emit data to server
+                document.getElementById('output').innerHTML += `<p><b>You:</b> ${input}</p>`;
+                document.getElementById('input').value = ''; // Clear input
+            }
+        }
+
+        // Receive data from other users
+        socket.on('receiveData', (data) => {
+            document.getElementById('output').innerHTML += `<p><b>Other:</b> ${data}</p>`;
+        });
+    </script>
+</body>
+</html>

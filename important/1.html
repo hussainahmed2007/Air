@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat - WhatsApp Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            border: 2px solid #00bfae;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-header {
+            background-color: #00bfae;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .chat-header h2 {
+            font-size: 18px;
+        }
+
+        .close-btn {
+            background: none;
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .chat-box {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            max-width: 75%;
+        }
+
+        .user-message {
+            background-color: #d1e7e0;
+            align-self: flex-start;
+        }
+
+        .bot-message {
+            background-color: #f1f1f1;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #ffffff;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .chat-input input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+        }
+
+        .chat-input button {
+            width: 15%;
+            padding: 10px;
+            margin-left: 10px;
+            background-color: #00bfae;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Live Chat</h2>
+            <button id="close-chat" class="close-btn">X</button>
+        </div>
+
+        <div class="chat-box" id="chat-box">
+            <div class="message user-message">
+                <p>Hello, how can I help you?</p>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const sendBtn = document.getElementById("send-btn");
+        const userInput = document.getElementById("user-input");
+        const chatBox = document.getElementById("chat-box");
+        const closeBtn = document.getElementById("close-chat");
+
+        // Function to add user and bot messages to chat
+        function addMessage(message, sender) {
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message");
+            messageElement.classList.add(sender);
+            messageElement.innerHTML = `<p>${message}</p>`;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // User sends message
+        sendBtn.addEventListener("click", () => {
+            const userMessage = userInput.value;
+            if (userMessage.trim() !== "") {
+                addMessage(userMessage, "user-message");
+                userInput.value = "";
+
+                // Simulate bot response after 1 second
+                setTimeout(() => {
+                    addMessage("I am here to help you!", "bot-message");
+                }, 1000);
+            }
+        });
+
+        // Close chat box
+        closeBtn.addEventListener("click", () => {
+            document.querySelector(".chat-container").style.display = "none";
+        });
+    </script>
+
+</body>
+</html>
